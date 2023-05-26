@@ -14,12 +14,12 @@ from finding_lines import Line, warp_image, find_LR_lines, draw_lane, print_road
 from skimage import exposure
 
 
-# input_type = 'video'
+input_type = 'video'
 # # input_name = 'project_video.mp4'
-# input_name = 'challenge_video.mp4'
+input_name = 'challenge_video.mp4'
 
-input_type = 'image'
-input_name = 'test_images/straight_lines1.jpg'
+# input_type = 'image'
+# input_name = 'test_images/straight_lines1.jpg'
 
 
 left_line = Line()

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import os
 import sys
-sys.path.append(os.path.expanduser('~')+"/ACC_Self_Driving_2023/externals/Advanced-lane-finding/src")
+sys.path.append(os.getcwd() + '/src')
+# sys.path.append(os.path.expanduser('~')+"/ACC_Self_Driving_2023/externals/Advanced-lane-finding/src")
 
 import time
 import numpy as np
@@ -14,29 +15,40 @@ from finding_lines import Line, warp_image, find_LR_lines, draw_lane, print_road
 from skimage import exposure
 
 
-# input_type = 'video'
-# # input_name = 'project_video.mp4'
-# input_name = 'challenge_video.mp4'
+# camera matrix & distortion coefficient for front CSI camera
+mtx = np.array([[318.86, 0, 401.34], [0, 312.14, 201.50], [0, 0, 1]])
+dist = np.array([[-0.9033, 1.5314, -0.0173, 0.0080, -1.1659]])
+
+img = cv2.imread('images_qcar/FRONT_CSI/front_0000.jpg')
+h,  w = img.shape[:2]
+newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
+
+def undistortMy(img, mtx, dist):
+    """ undistort image """
+    return cv2.undistort(img, mtx, dist, None, newcameramtx)
+
 
 input_type = 'image'
-input_name = 'test_images/straight_lines1.jpg'
+input_name = 'images_qcar/FRONT_CSI/front_0010.jpg'
 
 
 left_line = Line()
 right_line = Line()
 
+
 th_sobelx, th_sobely, th_mag, th_dir = (35, 100), (30, 255), (30, 255), (0.7, 1.3)
 th_h, th_l, th_s = (10, 100), (0, 60), (85, 255)
-
-# camera matrix & distortion coefficient
-mtx, dist = calib()
 
 if __name__ == '__main__':
 
     if input_type == 'image':
         t0 = time.time()
-        img = cv2.imread(input_name)
-        undist_img = undistort(img, mtx, dist)
+        # img = cv2.imread(input_name)
+        undist_img = cv2.imread(input_name)
+        cv2.imshow("img", undist_img)
+        # undist_img = undistort(img, mtx, dist)
+        # undist_img = undistortMy(img, mtx, dist)
+
         undist_img = cv2.resize(undist_img, None, fx=1 / 2, fy=1 / 2, interpolation=cv2.INTER_AREA)
         rows, cols = undist_img.shape[:2]
 

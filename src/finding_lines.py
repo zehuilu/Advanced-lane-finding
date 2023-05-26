@@ -92,14 +92,14 @@ def blind_search(b_img, left_line, right_line):
 
     # Find the peak of the left and right halves of the histogram
     # These will be the starting point for the left and right lines
-    midpoint = np.int(histogram.shape[0] / 2)
+    midpoint = np.int32(histogram.shape[0] / 2)
     start_leftX = np.argmax(histogram[:midpoint])
     start_rightX = np.argmax(histogram[midpoint:]) + midpoint
 
     # Choose the number of sliding windows
     num_windows = 9
     # Set height of windows
-    window_height = np.int(b_img.shape[0] / num_windows)
+    window_height = np.int32(b_img.shape[0] / num_windows)
 
     # Identify the x and y positions of all nonzero pixels in the image
     nonzero = b_img.nonzero()
@@ -144,9 +144,9 @@ def blind_search(b_img, left_line, right_line):
 
         # If you found > minpix pixels, recenter next window on their mean position
         if len(left_window_inds) > min_num_pixel:
-            current_leftX = np.int(np.mean(nonzerox[left_window_inds]))
+            current_leftX = np.int32(np.mean(nonzerox[left_window_inds]))
         if len(right_window_inds) > min_num_pixel:
-            current_rightX = np.int(np.mean(nonzerox[right_window_inds]))
+            current_rightX = np.int32(np.mean(nonzerox[right_window_inds]))
 
     # Concatenate the arrays of indices
     win_left_lane = np.concatenate(win_left_lane)

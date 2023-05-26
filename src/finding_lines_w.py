@@ -92,7 +92,7 @@ def blind_search(b_img, left_line, right_line):
     # Choose the number of sliding windows
     num_windows = 9
     # Set height of windows
-    window_height = np.int(b_img.shape[0] / num_windows)
+    window_height = np.int32(b_img.shape[0] / num_windows)
 
     # Identify the x and y positions of all nonzero pixels in the image
     nonzero = b_img.nonzero()
@@ -102,7 +102,7 @@ def blind_search(b_img, left_line, right_line):
     if left_line.startx == None:
         # Take a histogram of the bottom half of the image
         histogram = np.sum(b_img[int(b_img.shape[0] * 2 / 3):, :], axis=0)
-        midpoint = np.int(histogram.shape[0] / 2)
+        midpoint = np.int32(histogram.shape[0] / 2)
         start_leftX = np.argmax(histogram[:midpoint])
         start_rightX = np.argmax(histogram[midpoint:]) + midpoint
 
