@@ -1,10 +1,12 @@
+#!/usr/bin/env python3
+import os
 import numpy as np
 import cv2
 import matplotlib.image as mpimg
 import glob
 
 # Read in and make a list of calibration images
-images = glob.glob('camera_cal/calibration*.jpg')
+images = glob.glob(os.getcwd() + '/camera_cal/calibration*.jpg')
 
 # Array to store object points and image points from all the images
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
-sys.path.append(os.getcwd() + '/src')
+sys.path.append(os.path.expanduser('~')+"/ACC_Self_Driving_2023/externals/Advanced-lane-finding/src")
 
 import time
 import numpy as np
@@ -29,11 +29,7 @@ th_sobelx, th_sobely, th_mag, th_dir = (35, 100), (30, 255), (30, 255), (0.7, 1.
 th_h, th_l, th_s = (10, 100), (0, 60), (85, 255)
 
 # camera matrix & distortion coefficient
-# 3 by 3, 1 by 5, numpy 2D array
 mtx, dist = calib()
-
-print(mtx)
-print(dist)
 
 if __name__ == '__main__':
 
@@ -44,15 +40,12 @@ if __name__ == '__main__':
         undist_img = cv2.resize(undist_img, None, fx=1 / 2, fy=1 / 2, interpolation=cv2.INTER_AREA)
         rows, cols = undist_img.shape[:2]
 
-        # (360, 640)
         print((rows, cols))
 
         combined_gradient = gradient_combine(undist_img, th_sobelx, th_sobely, th_mag, th_dir)
         combined_hls = hls_combine(undist_img, th_h, th_l, th_s)
         combined_result = comb_result(combined_gradient, combined_hls)
 
-        # (128, 640)
-        # print(combined_result.shape)
         c_rows, c_cols = combined_result.shape[:2]
         s_LTop2, s_RTop2 = [c_cols / 2 - 24, 5], [c_cols / 2 + 24, 5]
         s_LBot2, s_RBot2 = [110, c_rows], [c_cols - 110, c_rows]
@@ -90,9 +83,6 @@ if __name__ == '__main__':
             undist_img = cv2.resize(undist_img, None, fx=1 / 2, fy=1 / 2, interpolation=cv2.INTER_AREA)
             rows, cols = undist_img.shape[:2]
 
-            # (360, 640)
-            # print((rows, cols))
-
             combined_gradient = gradient_combine(undist_img, th_sobelx, th_sobely, th_mag, th_dir)
             #cv2.imshow('gradient combined image', combined_gradient)
 
@@ -101,8 +91,6 @@ if __name__ == '__main__':
 
             combined_result = comb_result(combined_gradient, combined_hls)
 
-            # (128, 640)
-            # print(combined_result.shape)
             c_rows, c_cols = combined_result.shape[:2]
             s_LTop2, s_RTop2 = [c_cols / 2 - 24, 5], [c_cols / 2 + 24, 5]
             s_LBot2, s_RBot2 = [110, c_rows], [c_cols - 110, c_rows]
@@ -138,7 +126,6 @@ if __name__ == '__main__':
             info2 = print_road_status(info2, left_line, right_line)
             t1 = time.time()
             print("Time used [sec]: ", t1 - t0)
-
             cv2.imshow('road info', info2)
 
             # out.write(frame)
